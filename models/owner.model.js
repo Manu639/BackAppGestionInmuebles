@@ -1,11 +1,11 @@
-const { executeQuery } = require("./helpers");
+const { executeQuery, executeQueryUnique } = require("./helpers");
 
 const getAll = () => {
     return executeQuery('select * from owners');
 }
 
 const getById = (id) => {
-    return executeQuery('select * from owners where owners.id = ?', [id]);
+    return executeQueryUnique('select * from owners where owners.id = ?', [id]);
 }
 
 module.exports = {
