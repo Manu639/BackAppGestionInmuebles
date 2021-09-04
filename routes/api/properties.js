@@ -1,5 +1,5 @@
 let router = require('express').Router();
-const { getAll, getByType, getById } = require('../../models/properties.model')
+const { getAll, getByType, getById, update } = require('../../models/properties.model')
 
 router.get('/', async (req, res) => {
     let result = await getAll()
@@ -16,5 +16,11 @@ router.get('/:id', async (req, res) => {
     let result = await getById(req.params.id)
     res.json(result);
 });
+
+router.post('/update', async (req, res) => {
+    let result = await update(req.body);
+    res.json(result)
+})
+
 
 module.exports = router
