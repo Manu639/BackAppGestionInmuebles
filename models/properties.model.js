@@ -9,7 +9,7 @@ const getById = (id) => {
 }
 
 const getByType = (typeId) => {
-    return executeQuery('select * from properties where properties.type = ?', [typeId]);
+    return executeQueryUnique('select * from properties where properties.type = ?', [typeId]);
 }
 
 module.exports = {
