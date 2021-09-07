@@ -1,0 +1,24 @@
+
+//Test Registro de usuario
+POST http://127.0.0.1:3000/api/users/register
+Content-Type: application/json
+
+{
+    "email": "m.castillo@gestionescastillo.com",
+    "password": "1234",
+    "rol": "5",
+    "phone": "620583086",
+    "tax_address": "C/ Valdecaleras 5, 6ºB",
+    "tax_identification_number": "05296543B"
+}
+
+
+//Test login de usuario
+
+POST http://127.0.0.1:3000/api/users/login
+Content-Type: application/json
+
+{
+    "email": "m.castillo@gestionescastillo.com",
+    "password": "1234",
+}
