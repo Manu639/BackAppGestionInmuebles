@@ -12,8 +12,21 @@ router.get('/:id', async (req, res) => {
 })
 
 router.post('/update', async (req, res) => {
-    let result = await update(req.body);
-    res.json(result)
+    try {
+        let result = await update(req.body);
+        console.log(req.body)
+        res.json({
+            success: true,
+            results: result,
+            message: 'Your owner has been updated!'
+        })
+    } catch (err) {
+        res.json({
+            success: false,
+            err: err,
+            message: 'Something went wrong... Try again!'
+        })
+    }
 })
 
 module.exports = router

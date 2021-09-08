@@ -19,6 +19,8 @@ const update = (owner) => {
     query = query.substring(0, query.length - 2);
     query += ` WHERE owners.id = ${owner.id};`;
 
+    console.log(query)
+
     return executeQuery(query)
 }
 
