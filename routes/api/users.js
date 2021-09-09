@@ -36,13 +36,20 @@ router.post('/googleaccount', checkGoogleToken, async (req, res) => {
     try {
         const { email, given_name, family_name, jti } = req.body.userGoogleInfo
 
-        await create({ email: email, password: jti, name: given_name, last_name: family_name, role_id: 25 })
+        let user = await getByEmail(email)
+        console.log(user)
 
-        res.send('Registrado')
+        if (!user.email) {
+            await create({ email: email, password: jti, name: given_name, last_name: family_name, role_id: 25 })
+            let registeredUser = await getByEmail(email);
+            res.json({ success: true, registeredUser, message: 'the user has been registered' })
+        }
+        res.json({ success: true, message: 'user has been logged' })
+
     } catch (err) {
         res.json({
             success: false,
-            error: err
+            message: err
         })
     }
 })

@@ -1,7 +1,6 @@
 const { executeQuery, executeQueryUnique } = require("../assets/helpers");
 
 const create = ({ email, password, role_id, name, last_name }) => {
-    console.log({ email, password, role_id, name, last_name })
     return executeQueryUnique('INSERT INTO users (email, password, role_id, name, last_name) VALUES (?, ?, ?, ?, ?)', [email, password, role_id, name, last_name])
 }
 

@@ -14,7 +14,6 @@ router.get('/:id', async (req, res) => {
 router.post('/update', async (req, res) => {
     try {
         let result = await update(req.body);
-        console.log(req.body)
         res.json({
             success: true,
             results: result,
