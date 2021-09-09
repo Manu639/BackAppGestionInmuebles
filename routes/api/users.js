@@ -1,5 +1,6 @@
-let router = require('express').Router();
-let bcrypt = require('bcrypt');
+const router = require('express').Router();
+const bcrypt = require('bcrypt');
+const { checkGoogleToken } = require('../../assets/middlewares');
 const { create, getByEmail, getRoles } = require('../../models/user.model')
 
 router.get('/roles', async (req, res) => {
@@ -30,6 +31,22 @@ router.post('/register', async (req, res) => {
         })
     }
 })
+
+router.post('/googleaccount', checkGoogleToken, async (req, res) => {
+    try {
+        const { email, given_name, family_name, jti } = req.body.userGoogleInfo
+
+        await create({ email: email, password: jti, name: given_name, last_name: family_name, role_id: 25 })
+
+        res.send('Registrado')
+    } catch (err) {
+        res.json({
+            success: false,
+            error: err
+        })
+    }
+})
+
 
 router.post('/login', async (req, res) => {
     try {

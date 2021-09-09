@@ -1,7 +1,8 @@
-const { executeQuery, executeQueryUnique } = require("./helpers");
+const { executeQuery, executeQueryUnique } = require("../assets/helpers");
 
-const create = ({ email, password, rol, phone, tax_address, tax_identification_number }) => {
-    return executeQuery('INSERT INTO users (email, password, rol, phone, tax_address, tax_identification_number) VALUES (?, ?, ?, ?, ? ,?)', [email, password, rol, phone, tax_address, tax_identification_number])
+const create = ({ email, password, role_id, name, last_name }) => {
+    console.log({ email, password, role_id, name, last_name })
+    return executeQueryUnique('INSERT INTO users (email, password, role_id, name, last_name) VALUES (?, ?, ?, ?, ?)', [email, password, role_id, name, last_name])
 }
 
 const getByEmail = (email) => {
@@ -12,4 +13,8 @@ const getRoles = () => {
     return executeQuery('SELECT * FROM roles')
 }
 
-module.exports = { create, getByEmail, getRoles }
+const getRoleByName = (role) => {
+    return executeQueryUnique('SELECT * FROM roles WHERE roles.name === ?', [role])
+}
+
+module.exports = { create, getByEmail, getRoles, getRoleByName }

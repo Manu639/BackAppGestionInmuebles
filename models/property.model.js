@@ -1,4 +1,4 @@
-const { executeQuery, executeQueryUnique } = require("./helpers");
+const { executeQuery, executeQueryUnique } = require("../assets/helpers");
 
 const getAll = () => {
     return executeQuery('select * from properties');

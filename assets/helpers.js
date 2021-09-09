@@ -17,8 +17,9 @@ const executeQueryUnique = (sql, arrValues = []) => {
             sql,
             arrValues,
             (err, result) => {
+                console.log(result)
                 if (err) reject(err);
-                if (result.length !== 1) resolve({ response: 'No se han encontrado registros' });
+                if (result.length !== 1) resolve({});
                 resolve(result[0]);
             }
         )
