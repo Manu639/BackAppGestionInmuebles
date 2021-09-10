@@ -1,5 +1,6 @@
 const router = require('express').Router();
 const bcrypt = require('bcrypt');
+const { createToken } = require('../../assets/helpers');
 const { checkGoogleToken } = require('../../assets/middlewares');
 const { create, getByEmail, getRoles } = require('../../models/user.model')
 
@@ -14,20 +15,66 @@ router.get('/roles', async (req, res) => {
 })
 
 router.post('/register', async (req, res) => {
+
     try {
-        //TODO encrypt password first bcrypt
-        req.body.password = bcrypt.hashSync(req.body.password, 11);
-        await create(req.body);
-        res.json({
-            success: true,
-            user: req.body,
-            message: 'Create user successful'
-        })
+
+        let user = await getByEmail(req.body.email)
+        if (user.email) {
+            res.json({
+                info: { success: false, message: 'user already created' },
+                data: {}
+            })
+        }
+
+        if (!user.email) {
+            req.body.password = bcrypt.hashSync(req.body.password, 11);
+            await create(req.body);
+            let token = createToken(req.body)
+            res.json({
+                info: { success: true, message: 'Create user successful' },
+                data: { token }
+            })
+        }
+
     } catch (err) {
         res.json({
-            success: false,
-            err,
-            message: 'Create user failed'
+            info: { success: false, message: 'Create user failed' },
+            data: { err: err.message }
+        })
+    }
+})
+
+router.post('/login', async (req, res) => {
+    try {
+        let user = await getByEmail(req.body.email)
+        console.log(user)
+        if (!user.email) {
+            res.json({
+                info: { success: false, message: 'Invalid email or invalid password' },
+                data: {}
+            })
+        }
+        console.log(req.body.password)
+        console.log(user.password)
+        let isMatch = bcrypt.compareSync(req.body.password, user.password)
+        if (!isMatch) {
+            res.json({
+                info: { success: false, message: 'Invalid email or invalid password' },
+                data: {}
+            })
+        } else {
+
+            let token = createToken(user)
+            res.json({
+                info: { success: true, message: 'user is logged' },
+                data: { token }
+            })
+        }
+
+    } catch (err) {
+        res.json({
+            info: { success: false, message: err.message },
+            data: { err }
         })
     }
 })
@@ -42,37 +89,27 @@ router.post('/googleaccount', checkGoogleToken, async (req, res) => {
         if (!user.email) {
             await create({ email: email, password: jti, name: given_name, last_name: family_name, role_id: 25 })
             let registeredUser = await getByEmail(email);
-            res.json({ success: true, registeredUser, message: 'the user has been registered' })
+
+            res.json({
+                info: { success: true, message: 'the user has been registered' },
+                data: { registeredUser }
+            })
         }
-        res.json({ success: true, message: 'user has been logged' })
+
+        res.json({
+            info: { success: true, message: 'user has been logged' },
+            data: { user }
+        })
 
     } catch (err) {
         res.json({
-            success: false,
-            message: err
+            info: { success: false, message: err },
+            data: { err }
         })
     }
 })
 
 
-router.post('/login', async (req, res) => {
-    try {
-        let user = getByEmail(req.body.email)
 
-        if (!user) {
-            res.json({ success: false, message: 'El correo o la contraseña no son correctos' })
-        }
-
-        let match = bcrypt.compareSync(req.body.password, user.password)
-
-        if (!match) {
-            res.json({ success: false, message: 'El correo o la contraseña no son correctos' })
-        }
-
-        res.json(result)
-    } catch (err) {
-        res.json(err)
-    }
-})
 
 module.exports = router
