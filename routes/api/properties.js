@@ -1,9 +1,23 @@
 let router = require('express').Router();
-const { getAll, getByType, getById, update } = require('../../models/property.model')
+let jwt = require('jsonwebtoken');
+const { getByUser, getByType, getById, update } = require('../../models/property.model')
 
 router.get('/', async (req, res) => {
-    let result = await getAll()
-    res.json(result);
+    try {
+        let tokenInfo = jwt.verify(req.headers.authorization, process.env.SECRET_KEY)
+        let response = await getByUser(tokenInfo.userId)
+
+        res.json({
+            info: { success: true, message: 'query has been done' },
+            data: { response }
+        });
+
+    } catch (err) {
+        res.json({
+            info: { success: false, message: 'something went wrong with the query' },
+            data: { err }
+        })
+    }
 });
 
 //Return all the properties filtered by type

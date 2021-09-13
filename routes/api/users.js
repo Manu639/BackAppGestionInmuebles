@@ -47,15 +47,13 @@ router.post('/register', async (req, res) => {
 router.post('/login', async (req, res) => {
     try {
         let user = await getByEmail(req.body.email)
-        console.log(user)
         if (!user.email) {
             res.json({
                 info: { success: false, message: 'Invalid email or invalid password' },
                 data: {}
             })
         }
-        console.log(req.body.password)
-        console.log(user.password)
+
         let isMatch = bcrypt.compareSync(req.body.password, user.password)
         if (!isMatch) {
             res.json({
@@ -63,7 +61,6 @@ router.post('/login', async (req, res) => {
                 data: {}
             })
         } else {
-
             let token = createToken(user)
             res.json({
                 info: { success: true, message: 'user is logged' },
@@ -82,24 +79,19 @@ router.post('/login', async (req, res) => {
 router.post('/googleaccount', checkGoogleToken, async (req, res) => {
     try {
         const { email, given_name, family_name, jti } = req.body.userGoogleInfo
+        let token;
 
         let user = await getByEmail(email)
-        console.log(user)
 
         if (!user.email) {
             await create({ email: email, password: jti, name: given_name, last_name: family_name, role_id: 25 })
             let registeredUser = await getByEmail(email);
-
-            res.json({
-                info: { success: true, message: 'the user has been registered' },
-                data: { registeredUser }
-            })
+            token = createToken(registeredUser)
+            res.redirect(`${process.env.FRONT_BASE_URL}/login/${token}`)
         }
 
-        res.json({
-            info: { success: true, message: 'user has been logged' },
-            data: { user }
-        })
+        token = createToken(user)
+        res.redirect(`${process.env.FRONT_BASE_URL}login/${token}`)
 
     } catch (err) {
         res.json({

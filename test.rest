@@ -22,3 +22,11 @@ Content-Type: application/json
     "email": "m.castillo@gestionescastillo.com",
     "password": "1234",
 }
+###
+
+GET http://127.0.0.1:3000/api/owners
+Authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjE0NSwicm9sZSI6MjUsImlhdCI6MTYzMTUzMTY0Mn0._-EyOrS8NZ2lfIhteQZapTxjEw6FrN98hW1nESYxunk
+###
+
+GET http://127.0.0.1:3000/api/properties
+Authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjE0NSwicm9sZSI6MjUsImlhdCI6MTYzMTUzMTY0Mn0._-EyOrS8NZ2lfIhteQZapTxjEw6FrN98hW1nESYxunk

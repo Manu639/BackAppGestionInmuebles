@@ -4,6 +4,10 @@ const getAll = () => {
     return executeQuery('select * from owners');
 }
 
+const getByUser = (userId) => {
+    return executeQuery('SELECT o.* FROM users_owners as uo JOIN owners as o ON uo.owner_id = o.id WHERE uo.user_id = ?;', [userId])
+}
+
 const getById = (id) => {
     return executeQueryUnique('select * from owners where owners.id = ?', [id]);
 }
@@ -24,6 +28,7 @@ const update = (owner) => {
 
 module.exports = {
     getAll,
+    getByUser,
     getById,
     update
 }

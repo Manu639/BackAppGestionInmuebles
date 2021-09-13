@@ -1,7 +1,7 @@
 const { executeQuery, executeQueryUnique } = require("../assets/helpers");
 
-const getAll = () => {
-    return executeQuery('select * from properties');
+const getByUser = (userId) => {
+    return executeQuery('SELECT p.* FROM users_owners as uo JOIN owners_properties as op ON uo.owner_id = op.owner_id  JOIN properties as p ON op.property_id = p.id WHERE uo.user_id = ?;', [userId]);
 }
 
 const getById = (id) => {
@@ -27,7 +27,7 @@ const update = (property) => {
 }
 
 module.exports = {
-    getAll,
+    getByUser,
     getById,
     getByType,
     update
