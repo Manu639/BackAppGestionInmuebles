@@ -34,7 +34,12 @@ const create = ({ alias, address, lat, lng, type }) => {
     return executeQuery('INSERT INTO properties (alias, address, lat, lng, type, is_shelved) VALUES(?, ?, ?, ?, ?, 1)', [alias, address, lat, lng, type])
 }
 
+const createOwnerPropertyIndex = ({ property_id, owner_id, ownership, purchase_date }) => {
+    return executeQuery('INSERT INTO owners_properties (owner_id, property_id, ownership, purchase_date) VALUES(?, ?, ?, ?)', [property_id, owner_id, ownership, purchase_date])
+}
+
 module.exports = {
+    createOwnerPropertyIndex,
     create,
     getByUser,
     getById,
