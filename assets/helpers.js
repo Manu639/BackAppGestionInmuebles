@@ -5,10 +5,7 @@ const executeQuery = (sql, arrValues = []) => {
         db.query(
             sql, arrValues, (err, result) => {
                 if (err) {
-                    reject({
-                        info: { success: false, message: err.message },
-                        data: { err }
-                    })
+                    reject(err)
                 };
                 if (result.length === 0) resolve([]);
                 resolve(result);

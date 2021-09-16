@@ -30,3 +30,23 @@ Authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjE0NSwicm9sZSI6
 
 GET http://127.0.0.1:3000/api/properties
 Authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjE0NSwicm9sZSI6MjUsImlhdCI6MTYzMTUzMTY0Mn0._-EyOrS8NZ2lfIhteQZapTxjEw6FrN98hW1nESYxunk
+###
+
+POST http://127.0.0.1:3000/api/owners/create
+Content-Type: application/json
+Authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1lIjoiTWFudWVsIiwidXNlcklkIjoxNDUsInJvbGUiOjI1LCJpYXQiOjE2MzE2MTYzNjF9.xrW6-qSSRLZ9VzaNqj67WtOUHfoXlK2UvfyTJwr4Y24
+
+{
+    "name": "a",
+    "last_name": "a",
+    "phone": "a",
+    "email": "a",
+    "identification_number": "a",
+    "personal_address": "a",
+    "tax_address": "a",
+    "birth_date": "1999/01/07"
+}
+###
+
+GET http://127.0.0.1:3000/api/properties/types
+###

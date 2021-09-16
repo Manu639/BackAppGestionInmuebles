@@ -12,6 +12,10 @@ const getByType = (typeId) => {
     return executeQuery('select * from properties where properties.type = ?', [typeId]);
 }
 
+const getTypes = () => {
+    return executeQuery('select * FROM properties_types')
+}
+
 const update = (property) => {
 
     let query = 'UPDATE properties SET ';
@@ -26,9 +30,15 @@ const update = (property) => {
     return executeQuery(query)
 }
 
+const create = ({ alias, address, lat, lng, type }) => {
+    return executeQuery('INSERT INTO properties (alias, address, lat, lng, type, is_shelved) VALUES(?, ?, ?, ?, ?, 1)', [alias, address, lat, lng, type])
+}
+
 module.exports = {
+    create,
     getByUser,
     getById,
     getByType,
-    update
+    update,
+    getTypes
 }

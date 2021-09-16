@@ -12,6 +12,17 @@ const getById = (id) => {
     return executeQueryUnique('select * from owners where owners.id = ?', [id]);
 }
 
+const create = (owner) => {
+    let { name, last_name, phone, email, identification_number, personal_address, tax_address, birth_date } = owner
+    return executeQuery('INSERT INTO owners (name, last_name, phone, email, identification_number, personal_address, tax_address, birth_date) VALUES(?, ?, ?, ?, ?, ?, ?, ?);', [name, last_name, phone, email, identification_number, personal_address, tax_address, birth_date])
+}
+
+const createUserOwnerIndex = (userId, ownerId) => {
+    return executeQuery('INSERT INTO users_owners (user_id, owner_id) VALUES(?, ?);', [userId, ownerId])
+}
+
+
+
 const update = (owner) => {
 
     let query = 'UPDATE owners SET ';
@@ -28,7 +39,9 @@ const update = (owner) => {
 
 module.exports = {
     getAll,
+    createUserOwnerIndex,
     getByUser,
     getById,
+    create,
     update
 }
