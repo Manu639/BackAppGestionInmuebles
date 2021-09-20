@@ -1,12 +1,29 @@
 let router = require('express').Router();
 let jwt = require('jsonwebtoken');
-const { getByUser, getByType, getById, update, getTypes, create, createOwnerPropertyIndex } = require('../../models/property.model')
+const { getByOwner, getByUser, getByType, getById, update, getTypes, create, createOwnerPropertyIndex } = require('../../models/property.model')
 
 router.get('/', async (req, res) => {
     try {
         let tokenInfo = jwt.verify(req.headers.authorization, process.env.SECRET_KEY)
         let response = await getByUser(tokenInfo.userId)
 
+        res.json({
+            info: { success: true, message: 'query has been done' },
+            data: response
+        });
+
+    } catch (err) {
+        res.json({
+            info: { success: false, message: 'something went wrong with the query' },
+            data: err
+        })
+    }
+});
+
+router.get('/owner/:id', async (req, res) => {
+    try {
+        let response = await getByOwner(req.params.id)
+        console.log(response)
         res.json({
             info: { success: true, message: 'query has been done' },
             data: response
@@ -103,6 +120,5 @@ router.post('/create', async (req, res) => {
         })
     }
 })
-
 
 module.exports = router

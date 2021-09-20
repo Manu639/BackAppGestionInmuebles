@@ -38,7 +38,13 @@ const createOwnerPropertyIndex = ({ property_id, owner_id, ownership, purchase_d
     return executeQuery('INSERT INTO owners_properties (owner_id, property_id, ownership, purchase_date) VALUES(?, ?, ?, ?)', [property_id, owner_id, ownership, purchase_date])
 }
 
+const getByOwner = (owner_id) => {
+    console.log(owner_id)
+    return executeQuery('SELECT p.* FROM properties as p, owners_properties as op  WHERE p.id = op.property_id AND op.owner_id = ?', [owner_id])
+}
+
 module.exports = {
+    getByOwner,
     createOwnerPropertyIndex,
     create,
     getByUser,
