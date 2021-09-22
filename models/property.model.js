@@ -1,7 +1,7 @@
 const { executeQuery, executeQueryUnique } = require("../assets/helpers");
 
 const getByUser = (userId) => {
-    return executeQuery('SELECT p.* FROM users_owners as uo JOIN owners_properties as op ON uo.owner_id = op.owner_id  JOIN properties as p ON op.property_id = p.id WHERE uo.user_id = ?;', [userId]);
+    return executeQuery('SELECT p.*, pt.name as type_name FROM users_owners as uo JOIN owners as o ON uo.owner_id = o.id JOIN owners_properties as op ON op.owner_id = uo.owner_id JOIN properties as p ON op.property_id = p.id JOIN properties_types as pt ON pt.id = p.type WHERE user_id = ?;', [userId]);
 }
 
 const getById = (id) => {
@@ -39,7 +39,6 @@ const createOwnerPropertyIndex = ({ property_id, owner_id, ownership, purchase_d
 }
 
 const getByOwner = (owner_id) => {
-    console.log(owner_id)
     return executeQuery('SELECT p.* FROM properties as p, owners_properties as op  WHERE p.id = op.property_id AND op.owner_id = ?', [owner_id])
 }
 

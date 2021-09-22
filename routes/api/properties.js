@@ -23,7 +23,6 @@ router.get('/', async (req, res) => {
 router.get('/owner/:id', async (req, res) => {
     try {
         let response = await getByOwner(req.params.id)
-        console.log(response)
         res.json({
             info: { success: true, message: 'query has been done' },
             data: response
